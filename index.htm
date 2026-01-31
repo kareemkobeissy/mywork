@@ -1,9 +1,921 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Repunzel's secrete</title>
+  <style>
+    :root {
+      --bg: #fdf8f7;
+      --surface: #ffffff;
+      --primary: #d97d6d;
+      --primary-dark: #b76558;
+      --accent: #f2c9c2;
+      --text: #2d2b2a;
+      --muted: #7b6f6c;
+      --border: #efe3e1;
+      --success: #4caf50;
+      --error: #d9534f;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand h1 {
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+    }
+
+    .brand span {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-weight: 500;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .cart-pill {
+      background: var(--primary);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+
+    main {
+      padding: 32px 0 60px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .hero-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero h2 {
+      font-size: clamp(1.8rem, 2vw, 2.6rem);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 8px 16px rgba(217, 125, 109, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(217, 125, 109, 0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-ghost {
+      background: var(--accent);
+      color: var(--text);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 14px;
+    }
+
+    .product-card h3 {
+      font-size: 1.1rem;
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .product-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      align-items: start;
+    }
+
+    .product-details img {
+      width: 100%;
+      border-radius: 22px;
+      height: 380px;
+      object-fit: cover;
+    }
+
+    .detail-info {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quantity-selector {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--accent);
+      padding: 8px 12px;
+      border-radius: 12px;
+      width: fit-content;
+    }
+
+    .quantity-selector button {
+      border: none;
+      background: var(--primary);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .quantity-selector input {
+      width: 50px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+    }
+
+    .cart-table,
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+    }
+
+    .cart-table th,
+    .cart-table td,
+    .orders-table th,
+    .orders-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    .cart-table th,
+    .orders-table th {
+      background: #f8ecea;
+      font-weight: 600;
+    }
+
+    .cart-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .order-summary {
+      padding: 20px;
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field input {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 0.85rem;
+    }
+
+    .success-banner {
+      background: #e8f5e9;
+      border: 1px solid #b7e1bb;
+      color: #1e6f27;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 16px;
+    }
+
+    .admin-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .admin-details {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 24px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .product-details img {
+        height: 280px;
+      }
+    }
+  </style>
+</head>
 <body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <h1>Repunzel's secrete</h1>
+        <span>Premium hair care essentials</span>
+      </div>
+      <div class="nav-links">
+        <a class="pill" href="#shop">Shop</a>
+        <a class="pill" href="#checkout">Make Order</a>
+        <a class="pill" href="#admin">Admin</a>
+        <span class="cart-pill">Cart: <strong id="cart-count">0</strong></span>
+      </div>
+    </div>
+  </header>
 
-<h1>Deliciousness in every bite!</h1>
-<p>Every cookie made at the Kevin Cookie company is crafted with only the finest ingredients. Butter from grass fed cows. Unbleached flour with the best flavor and textures. Organic sugar only from India and phellipeans. Eggs from chickens that listen are out of range. Even our water is special. It comes from the Cascade Mountain springs that we hike up to retrieve. Baking is our passion and we take it very seriously.</p>
+  <main class="container">
+    <section id="shop-view" class="view">
+      <div class="hero">
+        <div class="hero-card">
+          <h2>Glow-ready hair rituals crafted for everyday luxury.</h2>
+          <p>
+            Explore our curated range of five hero products designed to hydrate, nourish,
+            and protect every strand. Build your routine with plush textures and modern botanicals.
+          </p>
+          <button class="btn btn-primary" id="start-shopping">Start Shopping</button>
+        </div>
+        <div class="hero-card">
+          <h3>Why LuxeHair Atelier</h3>
+          <p>✔ Lightweight formulas for all hair types</p>
+          <p>✔ Clean scents with salon-grade performance</p>
+          <p>✔ Fast shipping, beautiful packaging</p>
+        </div>
+      </div>
+      <div class="product-grid" id="product-grid"></div>
+    </section>
 
+    <section id="product-view" class="view hidden">
+      <div class="product-details" id="product-details"></div>
+      <div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px;">
+        <button class="btn btn-ghost" id="continue-shopping">Continue Shopping</button>
+        <button class="btn btn-primary" id="go-checkout">Make Order</button>
+      </div>
+    </section>
+
+    <section id="checkout-view" class="view hidden">
+      <h2 style="margin-bottom: 16px;">Checkout &amp; Order</h2>
+      <div class="cart-actions">
+        <div id="cart-container"></div>
+        <div class="order-summary">
+          <h3>Customer Details</h3>
+          <form id="order-form" novalidate>
+            <div class="form-grid">
+              <label class="field">
+                First Name
+                <input type="text" name="firstName" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field">
+                Last Name
+                <input type="text" name="lastName" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field">
+                Phone Number
+                <input type="tel" name="phone" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field">
+                City
+                <input type="text" name="city" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field" style="grid-column: 1 / -1;">
+                Street Address
+                <input type="text" name="street" required />
+                <span class="error-message"></span>
+              </label>
+            </div>
+            <button class="btn btn-primary" type="submit" id="submit-order" disabled>
+              Submit Order
+            </button>
+            <div id="order-confirmation"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="admin-view" class="view hidden">
+      <h2 style="margin-bottom: 16px;">Admin Orders</h2>
+      <p style="color: var(--muted); margin-bottom: 16px;">
+        Protected route: password required (hint: luxe123).
+      </p>
+      <div class="admin-layout">
+        <div>
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date/Time</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body"></tbody>
+          </table>
+        </div>
+        <div class="admin-details" id="order-details">
+          <h3>Order Details</h3>
+          <p style="color: var(--muted); margin-top: 8px;">Select an order to view full details.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Repunzel's secrete · Designed for luminous hair care experiences.
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: "mask",
+        name: "Silk Renewal Hair Mask",
+        price: 28,
+        image:
+          "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80",
+        description: "An ultra-rich treatment mask that restores shine and softness in minutes.",
+      },
+      {
+        id: "oil",
+        name: "Radiance Hair Oil",
+        price: 24,
+        image:
+          "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
+        description: "Lightweight argan blend to seal moisture and add glass-like gloss.",
+      },
+      {
+        id: "serum",
+        name: "Frizz Shield Hair Serum",
+        price: 26,
+        image:
+          "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80",
+        description: "Humidity-blocking serum that smooths and protects styled hair.",
+      },
+      {
+        id: "shampoo",
+        name: "Hydra Balance Shampoo",
+        price: 22,
+        image:
+          "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80",
+        description: "Creamy sulfate-free cleanse that leaves hair bouncy and hydrated.",
+      },
+      {
+        id: "leavein",
+        name: "Daily Dew Leave-In",
+        price: 20,
+        image:
+          "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80",
+        description: "All-day moisture mist for detangling and heat protection.",
+      },
+    ];
+
+    const cartKey = "luxehair_cart";
+    const ordersKey = "luxehair_orders";
+
+    const views = {
+      shop: document.getElementById("shop-view"),
+      product: document.getElementById("product-view"),
+      checkout: document.getElementById("checkout-view"),
+      admin: document.getElementById("admin-view"),
+    };
+
+    const cartCountEl = document.getElementById("cart-count");
+    const productGrid = document.getElementById("product-grid");
+    const productDetails = document.getElementById("product-details");
+    const cartContainer = document.getElementById("cart-container");
+    const orderForm = document.getElementById("order-form");
+    const submitOrderBtn = document.getElementById("submit-order");
+    const orderConfirmation = document.getElementById("order-confirmation");
+    const ordersTableBody = document.getElementById("orders-table-body");
+    const orderDetails = document.getElementById("order-details");
+
+    const adminPassword = "luxe123";
+
+    const formatPrice = (value) => `$${value.toFixed(2)}`;
+
+    const getCart = () => JSON.parse(localStorage.getItem(cartKey) || "[]");
+    const saveCart = (cart) => localStorage.setItem(cartKey, JSON.stringify(cart));
+    const getOrders = () => JSON.parse(localStorage.getItem(ordersKey) || "[]");
+    const saveOrders = (orders) => localStorage.setItem(ordersKey, JSON.stringify(orders));
+
+    const updateCartCount = () => {
+      const cart = getCart();
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCountEl.textContent = count;
+    };
+
+    const addToCart = (productId, quantity = 1) => {
+      const cart = getCart();
+      const existing = cart.find((item) => item.id === productId);
+      if (existing) {
+        existing.quantity += quantity;
+      } else {
+        cart.push({ id: productId, quantity });
+      }
+      saveCart(cart);
+      updateCartCount();
+    };
+
+    const removeFromCart = (productId) => {
+      const cart = getCart().filter((item) => item.id !== productId);
+      saveCart(cart);
+      updateCartCount();
+      renderCart();
+    };
+
+    const updateCartQuantity = (productId, quantity) => {
+      const cart = getCart();
+      const item = cart.find((entry) => entry.id === productId);
+      if (item) {
+        item.quantity = Math.max(1, quantity);
+        saveCart(cart);
+        updateCartCount();
+        renderCart();
+      }
+    };
+
+    const renderProductGrid = () => {
+      productGrid.innerHTML = "";
+      products.forEach((product) => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.addEventListener("click", () => {
+          location.hash = `#product-${product.id}`;
+        });
+
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" loading="lazy" />
+          <h3>${product.name}</h3>
+          <p class="price">${formatPrice(product.price)}</p>
+          <div class="card-actions">
+            <button class="btn btn-primary" type="button">Add to Cart</button>
+            <span class="pill">View</span>
+          </div>
+        `;
+
+        card.querySelector("button").addEventListener("click", (event) => {
+          event.stopPropagation();
+          addToCart(product.id, 1);
+        });
+
+        productGrid.appendChild(card);
+      });
+    };
+
+    const renderProductDetails = (productId) => {
+      const product = products.find((item) => item.id === productId);
+      if (!product) return;
+
+      productDetails.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <div class="detail-info">
+          <h2>${product.name}</h2>
+          <p class="price">${formatPrice(product.price)}</p>
+          <p style="color: var(--muted);">${product.description}</p>
+          <div class="quantity-selector">
+            <button type="button" id="decrease-qty">-</button>
+            <input type="number" id="quantity-input" min="1" value="1" />
+            <button type="button" id="increase-qty">+</button>
+          </div>
+          <button class="btn btn-primary" id="add-qty-cart">Add to Cart</button>
+        </div>
+      `;
+
+      const qtyInput = document.getElementById("quantity-input");
+      document.getElementById("decrease-qty").addEventListener("click", () => {
+        qtyInput.value = Math.max(1, parseInt(qtyInput.value, 10) - 1);
+      });
+      document.getElementById("increase-qty").addEventListener("click", () => {
+        qtyInput.value = parseInt(qtyInput.value, 10) + 1;
+      });
+      document.getElementById("add-qty-cart").addEventListener("click", () => {
+        const quantity = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+        addToCart(product.id, quantity);
+      });
+    };
+
+    const renderCart = () => {
+      const cart = getCart();
+      if (cart.length === 0) {
+        cartContainer.innerHTML =
+          "<div class='order-summary'><p>Your cart is empty. Add products to continue.</p></div>";
+        return;
+      }
+
+      const rows = cart
+        .map((item) => {
+          const product = products.find((entry) => entry.id === item.id);
+          const subtotal = product.price * item.quantity;
+          return `
+            <tr>
+              <td>${product.name}</td>
+              <td>${formatPrice(product.price)}</td>
+              <td>
+                <input type="number" min="1" value="${item.quantity}" data-id="${item.id}" class="cart-qty" style="width: 70px;" />
+              </td>
+              <td>${formatPrice(subtotal)}</td>
+              <td><button class="btn btn-outline remove-item" data-id="${item.id}">Remove</button></td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      const total = cart.reduce((sum, item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        return sum + product.price * item.quantity;
+      }, 0);
+
+      cartContainer.innerHTML = `
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Unit Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+        <div style="display: flex; justify-content: flex-end; margin-top: 12px; font-weight: 600;">
+          Total: ${formatPrice(total)}
+        </div>
+      `;
+
+      cartContainer.querySelectorAll(".cart-qty").forEach((input) => {
+        input.addEventListener("change", (event) => {
+          const value = parseInt(event.target.value, 10) || 1;
+          updateCartQuantity(event.target.dataset.id, value);
+        });
+      });
+
+      cartContainer.querySelectorAll(".remove-item").forEach((button) => {
+        button.addEventListener("click", () => removeFromCart(button.dataset.id));
+      });
+    };
+
+    const showView = (viewKey) => {
+      Object.values(views).forEach((view) => view.classList.add("hidden"));
+      views[viewKey].classList.remove("hidden");
+    };
+
+    const validateField = (field) => {
+      const value = field.value.trim();
+      let message = "";
+      if (!value) {
+        message = "This field is required.";
+      }
+      if (field.name === "phone" && value) {
+        const isValid = /^[0-9+()\-\s]{7,}$/.test(value);
+        if (!isValid) {
+          message = "Enter a valid phone number.";
+        }
+      }
+      const errorEl = field.parentElement.querySelector(".error-message");
+      errorEl.textContent = message;
+      return message === "";
+    };
+
+    const validateForm = () => {
+      const fields = Array.from(orderForm.querySelectorAll("input"));
+      const isValid = fields.every((field) => validateField(field));
+      submitOrderBtn.disabled = !isValid || getCart().length === 0;
+      return isValid;
+    };
+
+    const handleSubmitOrder = (event) => {
+      event.preventDefault();
+      if (!validateForm()) return;
+
+      const cart = getCart();
+      if (cart.length === 0) return;
+
+      const formData = new FormData(orderForm);
+      const customer = Object.fromEntries(formData.entries());
+      const orderId = `LH-${Date.now().toString(36).toUpperCase()}`;
+      const items = cart.map((item) => {
+        const product = products.find((entry) => entry.id === item.id);
+        return {
+          id: product.id,
+          name: product.name,
+          quantity: item.quantity,
+          price: product.price,
+        };
+      });
+      const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      const order = {
+        id: orderId,
+        timestamp: new Date().toISOString(),
+        status: "New",
+        customer,
+        items,
+        total,
+      };
+
+      const orders = getOrders();
+      orders.unshift(order);
+      saveOrders(orders);
+      localStorage.removeItem(cartKey);
+      updateCartCount();
+      renderCart();
+      orderForm.reset();
+      validateForm();
+
+      orderConfirmation.innerHTML = `
+        <div class="success-banner">
+          <strong>Order placed successfully!</strong>
+          <p>Your reference ID is <strong>${orderId}</strong>.</p>
+        </div>
+      `;
+      renderOrders();
+    };
+
+    const renderOrders = () => {
+      const orders = getOrders();
+      ordersTableBody.innerHTML = orders
+        .map((order) => {
+          const customerName = `${order.customer.firstName} ${order.customer.lastName}`;
+          const address = `${order.customer.city}, ${order.customer.street}`;
+          const date = new Date(order.timestamp).toLocaleString();
+          return `
+            <tr data-id="${order.id}">
+              <td>${order.id}</td>
+              <td>${date}</td>
+              <td>${customerName}</td>
+              <td>${order.customer.phone}</td>
+              <td>${address}</td>
+              <td>${formatPrice(order.total)}</td>
+              <td>${order.status}</td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      ordersTableBody.querySelectorAll("tr").forEach((row) => {
+        row.addEventListener("click", () => showOrderDetails(row.dataset.id));
+      });
+    };
+
+    const showOrderDetails = (orderId) => {
+      const orders = getOrders();
+      const order = orders.find((entry) => entry.id === orderId);
+      if (!order) return;
+
+      const itemsList = order.items
+        .map((item) => `<li>${item.quantity} × ${item.name} (${formatPrice(item.price)})</li>`)
+        .join("");
+
+      orderDetails.innerHTML = `
+        <h3>Order ${order.id}</h3>
+        <p><strong>Status:</strong> ${order.status}</p>
+        <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+        <p><strong>Customer:</strong> ${order.customer.firstName} ${order.customer.lastName}</p>
+        <p><strong>Phone:</strong> ${order.customer.phone}</p>
+        <p><strong>Address:</strong> ${order.customer.city}, ${order.customer.street}</p>
+        <h4 style="margin-top: 12px;">Items</h4>
+        <ul style="margin-left: 18px;">${itemsList}</ul>
+        <p style="margin-top: 12px;"><strong>Total:</strong> ${formatPrice(order.total)}</p>
+      `;
+    };
+
+    const ensureAdminAccess = () => {
+      if (sessionStorage.getItem("adminAuth") === "true") {
+        return true;
+      }
+      const password = prompt("Enter admin password:");
+      if (password === adminPassword) {
+        sessionStorage.setItem("adminAuth", "true");
+        return true;
+      }
+      alert("Incorrect password.");
+      location.hash = "#shop";
+      return false;
+    };
+
+    const handleRoute = () => {
+      const hash = location.hash || "#shop";
+      if (hash.startsWith("#product-")) {
+        const productId = hash.replace("#product-", "");
+        showView("product");
+        renderProductDetails(productId);
+        return;
+      }
+      if (hash === "#checkout") {
+        showView("checkout");
+        renderCart();
+        validateForm();
+        return;
+      }
+      if (hash === "#admin") {
+        if (!ensureAdminAccess()) return;
+        showView("admin");
+        renderOrders();
+        return;
+      }
+      showView("shop");
+    };
+
+    document.getElementById("continue-shopping").addEventListener("click", () => {
+      location.hash = "#shop";
+    });
+
+    document.getElementById("go-checkout").addEventListener("click", () => {
+      location.hash = "#checkout";
+    });
+
+    document.getElementById("start-shopping").addEventListener("click", () => {
+      location.hash = "#shop";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    orderForm.addEventListener("input", validateForm);
+    orderForm.addEventListener("submit", handleSubmitOrder);
+
+    window.addEventListener("hashchange", handleRoute);
+
+    renderProductGrid();
+    updateCartCount();
+    handleRoute();
+  </script>
 </body>
 </html>
