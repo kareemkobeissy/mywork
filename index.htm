@@ -1,9 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Repunzel's secrete</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 <body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <h1>Repunzel's secrete</h1>
+        <span>Premium hair care essentials</span>
+      </div>
+      <div class="nav-links">
+        <a class="pill" href="#shop">Shop</a>
+        <a class="pill" href="#checkout">Make Order</a>
+        <a class="pill" href="#admin">Admin</a>
+        <span class="cart-pill">Cart: <strong id="cart-count">0</strong></span>
+      </div>
+    </div>
+  </header>
 
-<h1>Deliciousness in every bite!</h1>
-<p>Every cookie made at the Kevin Cookie company is crafted with only the finest ingredients. Butter from grass fed cows. Unbleached flour with the best flavor and textures. Organic sugar only from India and phellipeans. Eggs from chickens that listen are out of range. Even our water is special. It comes from the Cascade Mountain springs that we hike up to retrieve. Baking is our passion and we take it very seriously.</p>
+  <main class="container">
+    <section id="shop-view" class="view">
+      <div class="hero">
+        <div class="hero-card">
+          <h2>Glow-ready hair rituals crafted for everyday luxury.</h2>
+          <p>
+            Explore our curated range of five hero products designed to hydrate, nourish,
+            and protect every strand. Build your routine with plush textures and modern botanicals.
+          </p>
+          <button class="btn btn-primary" id="start-shopping">Start Shopping</button>
+        </div>
+        <div class="hero-card">
+          <h3>Why LuxeHair Atelier</h3>
+          <p>✔ Lightweight formulas for all hair types</p>
+          <p>✔ Clean scents with salon-grade performance</p>
+          <p>✔ Fast shipping, beautiful packaging</p>
+        </div>
+      </div>
+      <div class="product-grid" id="product-grid"></div>
+    </section>
 
+    <section id="product-view" class="view hidden">
+      <div class="product-details" id="product-details"></div>
+      <div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px;">
+        <button class="btn btn-ghost" id="continue-shopping">Continue Shopping</button>
+        <button class="btn btn-primary" id="go-checkout">Make Order</button>
+      </div>
+    </section>
+
+    <section id="checkout-view" class="view hidden">
+      <h2 style="margin-bottom: 16px;">Checkout &amp; Order</h2>
+      <div class="cart-actions">
+        <div id="cart-container"></div>
+        <div class="order-summary">
+          <h3>Customer Details</h3>
+          <form id="order-form" novalidate>
+            <div class="form-grid">
+              <label class="field">
+                First Name
+                <input type="text" name="firstName" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field">
+                Last Name
+                <input type="text" name="lastName" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field">
+                Phone Number
+                <input type="tel" name="phone" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field">
+                City
+                <input type="text" name="city" required />
+                <span class="error-message"></span>
+              </label>
+              <label class="field" style="grid-column: 1 / -1;">
+                Street Address
+                <input type="text" name="street" required />
+                <span class="error-message"></span>
+              </label>
+            </div>
+            <button class="btn btn-primary" type="submit" id="submit-order" disabled>
+              Submit Order
+            </button>
+            <div id="order-confirmation"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="admin-view" class="view hidden">
+      <h2 style="margin-bottom: 16px;">Admin Orders</h2>
+      <p style="color: var(--muted); margin-bottom: 16px;">
+        Protected route: password required (hint: luxe123).
+      </p>
+      <div class="admin-layout">
+        <div>
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date/Time</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body"></tbody>
+          </table>
+        </div>
+        <div class="admin-details" id="order-details">
+          <h3>Order Details</h3>
+          <p style="color: var(--muted); margin-top: 8px;">Select an order to view full details.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Repunzel's secrete · Designed for luminous hair care experiences.
+  </footer>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
